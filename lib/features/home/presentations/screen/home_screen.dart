@@ -24,9 +24,8 @@ class HomeScreen extends StatelessWidget {
     final HomeCardController homeCardController = Get.put(HomeCardController());
     final EventController eventController = Get.put(EventController());
 
-
     return Scaffold(
-      backgroundColor:AppColors.primaryBackground,
+      backgroundColor: AppColors.primaryBackground,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -38,26 +37,29 @@ class HomeScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PrymariText(text: 'ID:S12334',),
-                    customText(text: 'hello amrit',fontSize:18,)
+                    PrymariText(text: 'ID:S12334'),
+                    customText(text: 'hello amrit', fontSize: 18),
                   ],
-                ),Row(
+                ),
+                Row(
                   children: [
                     Icon(Icons.notifications_none),
-                    SizedBox(width: 10.w,),
+                    SizedBox(width: 10.w),
                     CircleAvatar(
                       radius: 25,
-                      backgroundImage:AssetImage(ImagePath.profileImage) ,
-                    )
+                      backgroundImage: AssetImage(ImagePath.profileImage),
+                    ),
                   ],
                 ),
               ],
-            ),SizedBox(height: 20.h,),
+            ),
+            SizedBox(height: 20.h),
             CustomTextFormField(
-              controller:searchController,
+              controller: searchController,
               hintText: 'Search anithing',
-              prefixIcon: Icon(Icons.search),),
-            SizedBox(height: 20.h,),
+              prefixIcon: Icon(Icons.search),
+            ),
+            SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -83,62 +85,77 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    Obx(() => GridView.builder(
-                      shrinkWrap:true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 1,
-                        childAspectRatio:0.9,
+                    Obx(
+                      () => GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(vertical: 15.h),
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 2,
+                          mainAxisSpacing: 1,
+                          childAspectRatio: 0.9,
+                        ),
+                        itemCount: homeCardController.gridItems.length,
+                        itemBuilder: (context, index) {
+                          final item = homeCardController.gridItems[index];
+                          return GestureDetector(
+                            onTap: () => homeCardController.selectItem(index),
+                            child: CustomHomeCard(
+                              text: item['text'],
+                              bgColor:
+                                  homeCardController.selectedIndex.value ==
+                                      index
+                                  ? Colors.black12
+                                  : item['color'],
+                              child: Icon(
+                                item['icon'],
+                                size: 30,
+                                color: item['color'],
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      itemCount: homeCardController.gridItems.length,
-                      itemBuilder: (context, index) {
-                        final item = homeCardController.gridItems[index];
-                        return GestureDetector(
-                          onTap: () => homeCardController.selectItem(index),
-                          child: CustomHomeCard(
-                            child: Icon(item['icon'], size: 30, color: item['color']),
-                            text: item['text'],
-                            bgColor: homeCardController.selectedIndex.value == index
-                                ? Colors.black12
-                                : item['color'],
-                          ),
-                        );
-                      },
-                    )
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        customText(text: 'Up coming Events',fontSize:18.sp,),
-                        customText(text: 'view all',fontSize:12.sp,color: Colors.grey,),
+                        customText(text: 'Up coming Events', fontSize: 18.sp),
+                        customText(
+                          text: 'view all',
+                          fontSize: 12.sp,
+                          color: Colors.grey,
+                        ),
                       ],
                     ),
-                      Obx(() => GridView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: eventController.events.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                                childAspectRatio: 0.8,
-                              ),
-                              itemBuilder: (context, index) {
-                               final event = eventController.events[index];
-                               return CustomEventCard(
-                               image: event['image'],
-                                title: event['title'],
-                                 date: event['date'],
-                                           );
-                                          },
-                                         )
-                                     ),
+                    Obx(
+                      () => GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(vertical: 15.h),
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: eventController.events.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 0.8,
+                            ),
+                        itemBuilder: (context, index) {
+                          final event = eventController.events[index];
+                          return CustomEventCard(
+                            image: event['image'],
+                            title: event['title'],
+                            date: event['date'],
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
