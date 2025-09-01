@@ -66,7 +66,7 @@ class CustomTextFormField extends StatelessWidget {
         color: containerColor ?? const Color(0xffF9FAFB),
         border: Border.all(
           color: containerBorderColor ?? const Color(0xffE0E0E0),
-          width: containerBorderWidth ?? 0.5,
+          width: containerBorderWidth ?? 1,
         ),
         borderRadius: BorderRadius.circular(8),
       ),

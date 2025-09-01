@@ -12,8 +12,11 @@ class NavBarScreen extends StatelessWidget {
 
     return Obx(
           () => Scaffold(
+            extendBody: true,
         body: controller.pages[controller.currentIndex.value],
         bottomNavigationBar: CrystalNavigationBar(
+          enableFloatingNavBar: true,
+          height:90,
           currentIndex: controller.currentIndex.value,
           unselectedItemColor: Colors.black45,
           backgroundColor: Colors.blue.withValues(alpha: 0.3),
@@ -22,19 +25,19 @@ class NavBarScreen extends StatelessWidget {
           items: [
             CrystalNavigationBarItem(
               icon: Icons.home,
-              selectedColor: Colors.blue,
+              selectedColor: Colors.black,
             ),
             CrystalNavigationBarItem(
               icon: Icons.calendar_month,
-              selectedColor: Colors.blue,
+              selectedColor: Colors.black,
             ),
             CrystalNavigationBarItem(
               icon: Icons.message,
-              selectedColor: Colors.blue,
+              selectedColor: Colors.black,
             ),
             CrystalNavigationBarItem(
               icon: Icons.person,
-              selectedColor: Colors.blue,
+              selectedColor: Colors.black,
             ),
 
           ],
