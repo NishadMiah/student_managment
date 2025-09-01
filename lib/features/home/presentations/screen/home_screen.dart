@@ -8,17 +8,20 @@ import 'package:student_managment/core/utils/constants/image_path.dart';
 import '../../../../core/common/custom_text.dart';
 import '../../../../core/common/custom_textformfield.dart';
 import '../../../../core/common/prymari_text.dart';
+import '../../../profile/controllers/image_picker_controller.dart';
 import '../../controllers/Carousel_Controller.dart';
 import '../../controllers/event_controller.dart';
 import '../../controllers/home_card_controller.dart';
 import '../widgets/custom_event_Card.dart';
 import '../widgets/custom_home_card.dart';
+import 'attendence/attendence_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ImagePickerController imagecontroller = Get.find<ImagePickerController>();
     final TextEditingController searchController = TextEditingController();
     final CarouselControllerX controller = Get.find<CarouselControllerX>();
     final HomeCardController homeCardController = Get.put(HomeCardController());
@@ -45,10 +48,18 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Icon(Icons.notifications_none),
                     SizedBox(width: 10.w),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage(ImagePath.profileImage),
-                    ),
+                    Obx(() {
+                      return CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.grey.shade300,
+                        backgroundImage: imagecontroller.pickedImage.value != null
+                            ? FileImage(imagecontroller.pickedImage.value!)
+                            : null,
+                        child: imagecontroller.pickedImage.value == null
+                            ? const Icon(Icons.person, size: 50, color: Colors.white)
+                            : null,
+                      );
+                    }),
                   ],
                 ),
               ],
@@ -100,7 +111,32 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final item = homeCardController.gridItems[index];
                           return GestureDetector(
-                            onTap: () => homeCardController.selectItem(index),
+                            onTap: () {
+                              switch (index) {
+                                case 0:
+                                  Get.to(() => AttendenceScreen());
+                                case 1:
+                                  Get.to(() =>());
+                                case 2:
+                                  Get.to(() => ());
+                                case 3:
+                                  Get.to(() => ());
+
+                                case 4:
+                                  Get.to(() => ());
+                                  break;
+                                case 5:
+                                  Get.to(() => ());
+
+                                case 6:
+                                  Get.to(() => ());
+                                  break;
+                                case 7:
+                                  Get.to(() => ());
+                                default:
+                                  break;
+                              }
+                            },
                             child: CustomHomeCard(
                               text: item['text'],
                               bgColor:
