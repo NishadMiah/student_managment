@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:student_managment/core/utils/constants/app_colors.dart';
-import 'package:student_managment/features/home/presentations/screen/attendence/students_attendance_screen.dart';
-import 'package:student_managment/features/home/presentations/screen/attendence/teacher_attendance_screen.dart';
-class AttendenceScreen extends StatelessWidget {
-  const AttendenceScreen({super.key});
+import '../../../../core/utils/constants/app_colors.dart';
+import 'group_chat_screen.dart';
+import 'individual_chat_screen.dart';
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,9 @@ class AttendenceScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.primaryBackground,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           surfaceTintColor: Colors.transparent,
-          title: Text("Attendance"),
+          title: Text("Massage"),
           bottom: TabBar(
             labelStyle: TextStyle(
               fontSize: 16.sp,
@@ -22,15 +23,15 @@ class AttendenceScreen extends StatelessWidget {
             ),
             indicatorSize:TabBarIndicatorSize.tab ,
             tabs: [
-              Tab(text: "Student",),
-              Tab(text: "Teacher",),
+              Tab(text: "Individual",),
+              Tab(text: "Groups",),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Center(child: StudentsAttendanceScreen()),
-            Center(child:TeacherAttendanceScreen()),
+            Center(child: IndividualChatScreen()),
+            Center(child:GroupChatScreen()),
           ],
         ),
       ),

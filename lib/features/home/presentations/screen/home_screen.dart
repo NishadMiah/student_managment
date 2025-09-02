@@ -8,7 +8,9 @@ import 'package:student_managment/core/utils/constants/image_path.dart';
 import '../../../../core/common/custom_text.dart';
 import '../../../../core/common/custom_textformfield.dart';
 import '../../../../core/common/prymari_text.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../profile/controllers/image_picker_controller.dart';
+import '../../../profile/controllers/profile_edit_controller.dart';
 import '../../controllers/Carousel_Controller.dart';
 import '../../controllers/event_controller.dart';
 import '../../controllers/home_card_controller.dart';
@@ -25,7 +27,8 @@ class HomeScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
     final CarouselControllerX controller = Get.find<CarouselControllerX>();
     final HomeCardController homeCardController = Get.put(HomeCardController());
-    final EventController eventController = Get.put(EventController());
+    final EventController eventController = Get.find<EventController>();
+    final profileEditController = Get.find<ProfileEditController>();
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
@@ -41,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PrymariText(text: 'ID:S12334'),
-                    customText(text: 'hello amrit', fontSize: 18),
+                    Obx(()=>customText(text: 'hello,${profileEditController.name.value}', fontSize: 18)),
                   ],
                 ),
                 Row(
@@ -99,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                     Obx(
                       () => GridView.builder(
                         shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(vertical: 15.h),
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
@@ -158,10 +161,15 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         customText(text: 'Up coming Events', fontSize: 18.sp),
-                        customText(
-                          text: 'view all',
-                          fontSize: 12.sp,
-                          color: Colors.grey,
+                        GestureDetector(
+                          onTap: (){
+                            Get.toNamed(AppRoute.viewAllUpComingScreen);
+                          },
+                          child: customText(
+                            text: 'view all',
+                            fontSize: 12.sp,
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),
@@ -176,7 +184,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisCount: 2,
                               mainAxisSpacing: 10,
                               crossAxisSpacing: 10,
-                              childAspectRatio: 0.8,
+                              childAspectRatio: 0.9,
                             ),
                         itemBuilder: (context, index) {
                           final event = eventController.events[index];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomHomeCard extends StatelessWidget {
   final Widget child;
@@ -39,9 +40,12 @@ class CustomHomeCard extends StatelessWidget {
           /// text
           Text(
             text,
-            style:  TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
+            style: GoogleFonts.roboto( // Google Font নাম
+              textStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
             ),
           ),
         ],

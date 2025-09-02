@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:student_managment/core/common/secondary_custom_text.dart';
 import 'package:student_managment/core/utils/constants/icon_path.dart';
+import 'package:student_managment/features/profile/presentations/widget/custom_dropdown_menu.dart';
 import '../../../../core/common/custom_elevated_button.dart';
 import '../../../../core/common/custom_textformfield.dart';
 import '../../controllers/image_picker_controller.dart';
 import '../../controllers/profile_edit_controller.dart';
 class ProfileEditScreen extends StatelessWidget {
-  const ProfileEditScreen({super.key});
+  ProfileEditScreen({super.key});
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController fathernameController = TextEditingController();
+  TextEditingController roolController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  final ImagePickerController controller = Get.find<ImagePickerController>();
+  final profileEditController = Get.find<ProfileEditController>();
+  final GlobalKey _iconKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController fathernameController = TextEditingController();
-    TextEditingController roolController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController addressController = TextEditingController();
-
-    final ImagePickerController controller = Get.find<ImagePickerController>();
-    final profileEditController = Get.find<ProfileEditController>();
-
-
+     // icon position track
 
     return Scaffold(
       body: Padding(
@@ -129,11 +133,29 @@ class ProfileEditScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 20.h,),
-                    CustomTextFormField(hintText: "Enter Your Phone number",controller:phoneController,),
+                    CustomTextFormField(
+                      hintText: "Enter Your Phone number",
+                      controller:phoneController,
+                      keyboardType:TextInputType.number,
+                      onChanged: (value){
+                        profileEditController.updateProfile(newPhone: value);
+                      },
+                    ),
                     SizedBox(height: 20.h,),
-                    CustomTextFormField(hintText: "Enter Your Rool",controller:roolController,),
+                    CustomTextFormField(
+                      hintText: "Enter Your Rool",
+                      controller:roolController,
+                      keyboardType: TextInputType.number,
+                      onChanged: (value){
+                        profileEditController.updateProfile(newRoll: value);
+                      },
+                    ),
                     SizedBox(height: 20.h,),
-                    CustomTextFormField(hintText: "Enter Your Address",controller:addressController,),
+                    CustomTextFormField(hintText: "Enter Your Address",controller:addressController,
+                      onChanged: (value){
+                      profileEditController.updateProfile(newAddress: value);
+                      },
+                    ),
                     SizedBox(height: 20.h,),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -147,18 +169,19 @@ class ProfileEditScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("date of birth",style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp
-                          ),),
+                          SecondaryCustomText(text: "date of birth"),
                           Row(
                             children: [
-                              Text("12/12/12",style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.sp
-                              )),SizedBox(width: 20.w,),
-                              Icon(Icons.arrow_drop_down_sharp,size: 30,)
-              
+                              Obx(() {
+                    final date = profileEditController.selectedDate.value;
+                    final formattedDate = "${date.day.toString().padLeft(2,'0')}-"
+                    "${date.month.toString().padLeft(2,'0')}-"
+                    "${date.year}";
+                    return SecondaryCustomText(text: "$formattedDate");
+                    }),SizedBox(width: 20.w,),
+                              GestureDetector(
+                                onTap: () => profileEditController.pickDate(context),
+                                  child: Icon(Icons.calendar_month,size: 30,color: Colors.grey,))
                             ],
                           )
                         ],
@@ -177,17 +200,37 @@ class ProfileEditScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Gender",style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp
-                          ),),
+                          SecondaryCustomText(text: "Gender"),
                           Row(
                             children: [
-                              Text("Male",style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.sp
-                              )),SizedBox(width: 20.w,),
-                              Icon(Icons.arrow_drop_down_sharp,size: 30,)
+                              Obx(() => Text(
+                        profileEditController.gender.value.isEmpty
+                    ? 'Select Gender'
+                         : profileEditController.gender.value,
+                          style: TextStyle(fontSize: 18),
+                       )  ),
+
+                              SizedBox(width: 20.w,),
+                              GestureDetector(
+                                key: _iconKey,
+                                onTap: () async {
+                                  final selected = await CustomDropdownMenu.show<String>(
+                                    context: context,
+                                    keyWidget: _iconKey,
+                                    items: ['Male', 'Female'],
+                                    itemWidgets: [Text('Male'), Text('Female')],
+                                  );
+
+                                  if (selected != null) {
+                                    profileEditController.updateGender(selected);
+                                  }
+                                },
+                                child: Icon(
+                                  Icons.arrow_drop_down_sharp,
+                                  size: 30,
+                                ),
+                              ),
+
                             ],
                           )
                         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:student_managment/core/common/secondary_custom_text.dart';
 import 'package:student_managment/core/utils/constants/app_colors.dart';
 import '../../../../core/common/custom_text.dart';
 import '../../../../core/common/prymari_text.dart';
@@ -66,49 +67,60 @@ class ProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'Date of birth'),
-                          PrymariText(text: '30-nov-2011'),
+                          Obx(() {
+                            final date = profileEditController.selectedDate.value;
+                            final formattedDate = "${date.day.toString().padLeft(2,'0')}-"
+                                "${date.month.toString().padLeft(2,'0')}-"
+                                "${date.year}";
+                            return SecondaryCustomText(text: "$formattedDate");
+                          }),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'Father Name'),
-                          Obx(() =>PrymariText(text: '${profileEditController.fatherName.value}')),
+                          Obx(() =>SecondaryCustomText(text: '${profileEditController.fatherName.value}')),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'Gender'),
-                          PrymariText(text: 'male'),
+                          Obx(() => Text(
+                            profileEditController.gender.value.isEmpty
+                                ? 'Select Gender'
+                                : profileEditController.gender.value,
+                            style: TextStyle(fontSize: 18),
+                          )),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'Class'),
-                          PrymariText(text: '7th'),
+                          SecondaryCustomText (text: '7th'),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'Rool number'),
-                          PrymariText(text: '04'),
+                          Obx(()=>SecondaryCustomText(text: '${profileEditController.roll.value}')),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'phone number'),
-                          PrymariText(text: '+7453475374'),
+                          Obx(() =>SecondaryCustomText(text: '${profileEditController.phone.value}')),
                         ],
                       ),SizedBox(height: 15.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           PrymariText(text: 'address'),
-                          PrymariText(text: 'gfgnfgnxfgf'),
+                          Obx(()=>SecondaryCustomText(text: '${profileEditController.address.value}')),
                         ],
                       ),SizedBox(height: 15.h,),
 
