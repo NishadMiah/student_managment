@@ -7,8 +7,14 @@ import '../../profile/presentations/screens/profile_screen.dart';
 class NavBarController extends GetxController {
   var currentIndex = 0.obs;
 
+  // Center(child: HomeScreen()),
+  // Center(child: CalenderScreen()),
+  // Center(child: ChatScreen()),
+  // Center(child: ProfileScreen()),
+  // ];
   // Pages list
   final pages = [
+
      Center(child: HomeScreen()),
      Center(child: CalenderScreen()),
      Center(child: ChatScreen()),
